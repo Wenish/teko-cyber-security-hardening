@@ -34,8 +34,8 @@ Andernfalls ist nach dem Hardening kein SSH-Zugriff mehr möglich.
 ## Projektstruktur
 
 ```text
-hardening/
-├── harden.sh
+src/
+├── main.sh
 ├── modules/
 │   ├── 01_update_system.sh
 │   ├── 02_users_ssh.sh
@@ -58,12 +58,12 @@ cd teko-cyber-security-raspberry-pi-hardening
 
 ### 2. Scripts ausführbar machen (einmalig)
 ```bash
-chmod +x main.sh modules/*.sh
+chmod +x src/main.sh src/modules/*.sh
 ```
 
 ### 3. Hardening starten
 ```bash
-sudo ./main.sh
+sudo ./src/main.sh
 ```
 
 Nach Abschluss wird ein Reboot empfohlen.
