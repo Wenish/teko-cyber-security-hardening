@@ -35,7 +35,7 @@ Andernfalls ist nach dem Hardening kein SSH-Zugriff mehr möglich.
 
 ```text
 src/
-├── main.sh
+├── harden.sh
 ├── modules/
 │   ├── 01_update_system.sh
 │   ├── 02_users_ssh.sh
@@ -56,17 +56,34 @@ git clone https://github.com/Wenish/teko-cyber-security-raspberry-pi-hardening.g
 cd teko-cyber-security-raspberry-pi-hardening
 ```
 
+
+
 ### 2. Scripts ausführbar machen (einmalig)
 ```bash
-chmod +x src/main.sh src/modules/*.sh
+chmod +x src/harden.sh src/check.sh src/modules/*.sh
 ```
 
 ### 3. Hardening starten
 ```bash
-sudo ./src/main.sh
+sudo ./src/harden.sh
 ```
 
 Nach Abschluss wird ein Reboot empfohlen.
+
+### 4. Hardening Check
+```bash
+sudo ./src/check.sh
+```
+
+oder mit nmap
+
+Wichtig hier nmap davor installieren und nach dem check wieder deinstallieren.
+Nmap wird nur für den check benötigt. Ist ansonsten eine unnötige Angrifffläche.
+
+```bash
+sudo sudo ./src/check.sh --network
+```
+
 
 ---
 
