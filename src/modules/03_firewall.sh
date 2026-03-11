@@ -1,17 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/00_common.sh"
+ensure_root
 
-echo "[*] Firewall (UFW) konfigurieren"
+log "Firewall (UFW) konfigurieren"
 
-apt install -y ufw
+ensure_cmd_or_pkg ufw ufw
 
-ufw --force reset
+# Defaults
 ufw default deny incoming
 ufw default allow outgoing
 
+# Allow SSH
 ufw allow 22/tcp
+
+# Optional: Web (wenn du nginx spaeter willst)
 ufw allow 80/tcp
 ufw allow 443/tcp
 
+# Enable
 ufw --force enable
 
-echo "[✓] Firewall Konfiguration abgeschlossen"
+ok "Firewall Konfiguration abgeschlossen"

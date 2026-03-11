@@ -1,7 +1,9 @@
 #!/bin/bash
 
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 echo "========================================"
-echo "   Raspberry Pi Hardening Check"
+echo "   Debian 13.3 Hardening Check"
 echo "========================================"
 
 if [ "$EUID" -ne 0 ]; then
@@ -19,20 +21,28 @@ MAX_SCORE=10
 
 echo
 echo "[1] SSH Passwort-Login deaktiviert"
-if sshd -T 2>/dev/null | grep -q "passwordauthentication no"; then
-  echo "[+] OK"
-  SCORE=$((SCORE+1))
+if command -v sshd >/dev/null 2>&1; then
+  if sshd -T 2>/dev/null | grep -q "passwordauthentication no"; then
+    echo "[+] OK"
+    SCORE=$((SCORE+1))
+  else
+    echo "[!] NICHT deaktiviert"
+  fi
 else
-  echo "[!] NICHT deaktiviert"
+  echo "[-] sshd nicht installiert, überspringe"
 fi
 
 echo
 echo "[2] Root-Login deaktiviert"
-if sshd -T 2>/dev/null | grep -q "permitrootlogin no"; then
-  echo "[+] OK"
-  SCORE=$((SCORE+1))
+if command -v sshd >/dev/null 2>&1; then
+  if sshd -T 2>/dev/null | grep -q "permitrootlogin no"; then
+    echo "[+] OK"
+    SCORE=$((SCORE+1))
+  else
+    echo "[!] Root-Login erlaubt"
+  fi
 else
-  echo "[!] Root-Login erlaubt"
+  echo "[-] sshd nicht installiert, überspringe"
 fi
 
 echo
@@ -57,7 +67,7 @@ if command -v ufw >/dev/null 2>&1; then
     SCORE=$((SCORE+1))
   fi
 else
-  echo "[-] ufw nicht installiert, ueberspringe"
+  echo "[-] ufw nicht installiert, überspringe"
 fi
 
 echo
@@ -97,7 +107,7 @@ if command -v nginx >/dev/null 2>&1; then
     echo "[-] TLS Konfiguration nicht gefunden"
   fi
 else
-  echo "[-] nginx nicht installiert, ueberspringe"
+  echo "[-] nginx nicht installiert, überspringe"
 fi
 
 echo
@@ -110,7 +120,7 @@ if command -v nginx >/dev/null 2>&1; then
     echo "[-] Keine Rate Limits gefunden"
   fi
 else
-  echo "[-] nginx nicht installiert, ueberspringe"
+  echo "[-] nginx nicht installiert, überspringe"
 fi
 
 echo
@@ -142,7 +152,7 @@ fi
 
 echo
 if [ "$SCORE" -ge 8 ]; then
-  echo "[✓] System gut gehaertet."
+  echo "[✓] System gut gehärtet."
   exit 0
 else
   echo "[!] Verbesserungspotenzial vorhanden."

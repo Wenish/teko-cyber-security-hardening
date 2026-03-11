@@ -1,7 +1,7 @@
-# Raspberry Pi OS Hardening Script
+# Debian Hardening Script
 
 ## Beschreibung
-Dieses Projekt stellt ein automatisiertes Hardening-Script für Raspberry Pi OS zur Verfügung.  
+Dieses Projekt stellt ein automatisiertes Hardening-Script für Debian zur Verfügung.  
 Das Script härtet ein frisch installiertes System, ohne die Funktionalität als Webserver einzuschränken.
 
 Nach der Ausführung sind folgende Funktionen weiterhin möglich:
@@ -14,13 +14,13 @@ Das Hardening erfolgt modular und reproduzierbar.
 ---
 
 ## Ziel
-Ziel dieses Projekts ist es, die Angriffsfläche eines Raspberry Pi zu reduzieren und gängige Sicherheitsrisiken zu minimieren, ohne produktive Dienste zu blockieren.
+Ziel dieses Projekts ist es, die Angriffsfläche eines Debian-Systems zu reduzieren und gängige Sicherheitsrisiken zu minimieren, ohne produktive Dienste zu blockieren.
 
 ---
 
 ## Voraussetzungen
-- Raspberry Pi 5
-- Raspberry Pi OS (Bullseye oder Bookworm)
+- Debian 13.3
+- Frische oder sauber vorbereitete Debian-Installation
 - Internetverbindung
 - Bestehender SSH-Key für den Benutzer
 - Root-Rechte (sudo)
@@ -77,11 +77,11 @@ sudo ./src/check.sh
 
 oder mit nmap
 
-Wichtig hier nmap davor installieren und nach dem check wieder deinstallieren.
-Nmap wird nur für den check benötigt. Ist ansonsten eine unnötige Angrifffläche.
+Wichtig: nmap nur für den Check installieren und danach wieder entfernen.  
+Nmap wird ausschliesslich für die Prüfung benötigt und stellt sonst eine zusätzliche Angriffsfläche dar.
 
 ```bash
-sudo sudo ./src/check.sh --network
+sudo ./src/check.sh --network
 ```
 
 

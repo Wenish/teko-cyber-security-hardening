@@ -1,14 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/00_common.sh"
+ensure_root
 
-echo "[*] Verifikation"
+log "Verifikation"
 
 echo "--- SSH ---"
-sshd -T | grep -E "passwordauthentication|permitrootlogin"
+if have_cmd sshd; then
+  sshd -T | egrep "passwordauthentication|permitrootlogin" || true
+else
+  warn "sshd nicht im PATH / nicht installiert"
+fi
 
 echo "--- Firewall ---"
-ufw status verbose
+if have_cmd ufw; then
+  ufw status verbose || true
+else
+  warn "ufw nicht im PATH / nicht installiert"
+fi
 
 echo "--- Fail2Ban ---"
-fail2ban-client status sshd || true
+if have_cmd fail2ban-client; then
+  fail2ban-client status sshd || true
+else
+  warn "fail2ban-client nicht gefunden"
+fi
 
-echo "[✓] Verifikation abgeschlossen"
+ok "Verifikation abgeschlossen"
